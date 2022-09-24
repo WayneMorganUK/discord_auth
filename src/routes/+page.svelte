@@ -1,16 +1,34 @@
 <script lang='ts'>
-  import { page} from '$app/stores'
-  console.log('==================page===============', $page)
-  export let data;
-  console.log('user', data.user)
+  import type { PageData } from './$types'
+  export let data:PageData
 </script>
-
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a rel="external" href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class='section'>
+<h1>Welcome to SvelteKit Discord OAuth2</h1>
+<p>Visit <a rel="external" href="https://discord.com/developers/applications">Discord Developers Portal</a> to create a Discord Application</p>
+<p>Based on this blog post <a rel='external' href='https://msyyn.medium.com/how-to-add-discord-oauth-to-your-sveltekit-web-application-7c2e69d7656e'>How to add Discord OAuth to your SvelteKit web application</a></p>
 {#if !data.user}
   <a rel="external" title="Discord OAuth2" href="api/auth">Authenticate via Discord</a>
 {:else}
-  <img alt="{data.user.userName}#{data.user.discriminator} avatar" src="https://cdn.discordapp.com/avatars/{data.user.id}/{data.user.avatar}.png">
+  <img style='background-color:{data.user.banner_color};' alt="{data.user.username}#{data.user.discriminator} avatar" src="https://cdn.discordapp.com/avatars/{data.user.id}/{data.user.avatar}.png">
   <h1>{data.user.username}#{data.user.discriminator}</h1>
+  <h2>email: {data.user.email}</h2>
   <a title="Sign out" href="api/signout">Sign Out</a>
+  <!-- <pre>{JSON.stringify(data.user , null, 2)}</pre> -->
 {/if}
+</div>
+<style>
+  .section {
+    align-items: center;
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  img {
+    height:200px;
+    width:  200px;
+    padding: 5px;
+
+  }
+</style>

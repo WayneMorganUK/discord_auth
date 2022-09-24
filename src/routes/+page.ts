@@ -1,6 +1,9 @@
-/** * @type {import('@sveltejs/kit').Load} */
-export async function load({ locals }) {
-    console.log('========page.load.locals==============', locals)
-    return { ...locals }
+import type { PageLoad } from '../../.svelte-kit/types/src/routes/$types';
 
-}
+export const load: PageLoad = async ({ parent }) => {
+	console.log('==================== +page.ts =======================');
+	const locals = await parent();
+	return {
+		locals
+	};
+};
