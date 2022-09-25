@@ -1,14 +1,26 @@
 import { DISCORD_CLIENT_ID } from '$env/static/private';
 import { DISCORD_CLIENT_SECRET } from '$env/static/private';
 import { DISCORD_REDIRECT_URI } from '$env/static/private';
-import { error } from '@sveltejs/kit';
+import { error, json, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { dev } from '$app/environment';
 
-export const GET: RequestHandler = async ({ url, cookies }) => {
-	console.log('====================refresh=======================');
+export const GET: RequestHandler = async ({ url, cookies, locals }) => {
+	console.log('======refresh=====');
+	if (locals.user?.id) {
+		console.log('======refresh user exists => return: ');
+		throw redirect(302, '/');
+	}
+
 	const disco_refresh_token = url.searchParams.get('code');
-	console.log('refresh disco refreshh token from search params', disco_refresh_token);
+	console.log('======refresh disco refreshh token from search params====', disco_refresh_token);
+	const refresh_token_expires_in = new Date(Date.now() + 60 * 1000); // 1 minute
+	cookies.set('test', 'refreshed_true', {
+		secure: !dev,
+		httpOnly: true,
+		path: '/',
+		expires: refresh_token_expires_in
+	});
 
 	if (!disco_refresh_token) {
 		throw error(500, 'No refresh token found in url search params ');
@@ -22,8 +34,9 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 		grant_type: 'refresh_token',
 		redirect_uri: DISCORD_REDIRECT_URI,
 		refresh_token: disco_refresh_token,
-		scope: 'identify email guilds'
+		scope: 'email identify guilds'
 	};
+	console.log('======refresh== perform fetch for new access token ===');
 
 	// performing a Fetch request to Discord's token endpoint
 	const request = await fetch('https://discord.com/api/oauth2/token', {
@@ -31,29 +44,14 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 		body: new URLSearchParams(dataObject),
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 	});
-	console.log('refresh request', request);
-	const response = await request.json();
-	console.log('refresh response  access token', response.access_token);
-	if (response.error) {
+	const refresh_response = await request.json();
+	console.log('======refresh=====', request.status, request.statusText);
+
+	console.log('========refresh response  refresh token', refresh_response);
+
+	if (refresh_response.error) {
 		throw error(500, 'No refresh token found in POST response');
 	}
 
-	// redirect user to front page with cookies set
-	const access_token_expires_in = new Date(Date.now() + response.expires_in); // 10 minutes
-	const refresh_token_expires_in = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
-	console.log('set refreshed cookies');
-	cookies.set('disco_access_token', response.access_token, {
-		secure: !dev,
-		httpOnly: true,
-		path: '/',
-		expires: access_token_expires_in
-	});
-	cookies.set('disco_refresh_token', response.refresh_token, {
-		secure: !dev,
-		httpOnly: true,
-		path: '/',
-		expires: refresh_token_expires_in
-	});
-
-	return new Response(JSON.stringify({ disco_access_token: response.access_token }));
+	return json(refresh_response);
 };

@@ -1,11 +1,13 @@
 <script lang='ts'>
-  import type { PageData } from './$types'
-  export let data:PageData
+  console.log("======page svelte=====")
+
+  import { page } from '$app/stores'
+  $:data = $page.data
 </script>
 <div class='section'>
 <h1>Welcome to SvelteKit Discord OAuth2</h1>
-<p>Visit <a rel="external" href="https://discord.com/developers/applications">Discord Developers Portal</a> to create a Discord Application</p>
-<p>Based on this blog post <a rel='external' href='https://msyyn.medium.com/how-to-add-discord-oauth-to-your-sveltekit-web-application-7c2e69d7656e'>How to add Discord OAuth to your SvelteKit web application</a></p>
+<p>Visit <a target='_blank' rel="external" href="https://discord.com/developers/applications">Discord Developers Portal</a> to create a Discord Application</p>
+<p>Based on this blog post <a target='_blank' rel='external' href='https://msyyn.medium.com/how-to-add-discord-oauth-to-your-sveltekit-web-application-7c2e69d7656e'>How to add Discord OAuth to your SvelteKit web application</a></p>
 {#if !data.user}
   <a rel="external" title="Discord OAuth2" href="api/auth">Authenticate via Discord</a>
 {:else}
