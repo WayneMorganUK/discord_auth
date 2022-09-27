@@ -1,10 +1,9 @@
 <script lang='ts'>
-  console.log("======page svelte=====")
-
   import { page } from '$app/stores'
   $:data = $page.data
 </script>
 <div class='section'>
+  <a class='link' data-sveltekit-prefetch href="/guilds">Guilds</a>
 <h1>Welcome to SvelteKit Discord OAuth2</h1>
 <p>Visit <a target='_blank' rel="external" href="https://discord.com/developers/applications">Discord Developers Portal</a> to create a Discord Application</p>
 <p>Based on this blog post <a target='_blank' rel='external' href='https://msyyn.medium.com/how-to-add-discord-oauth-to-your-sveltekit-web-application-7c2e69d7656e'>How to add Discord OAuth to your SvelteKit web application</a></p>
@@ -19,6 +18,9 @@
 {/if}
 </div>
 <style>
+    .link {
+    font-size: 32px;
+  }
   .section {
     align-items: center;
     display:flex;

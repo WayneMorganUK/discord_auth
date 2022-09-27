@@ -7,6 +7,5 @@ const DISCORD_ENDPOINT = `https://discord.com/api/oauth2/authorize?client_id=${D
 )}&response_type=code&scope=email%20identify%20guilds`;
 
 export const GET: RequestHandler = () => {
-	console.log('====== auth ===== redirect');
 	throw redirect(307, DISCORD_ENDPOINT);
 };

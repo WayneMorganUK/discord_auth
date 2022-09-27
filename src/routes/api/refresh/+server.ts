@@ -6,14 +6,11 @@ import type { RequestHandler } from './$types';
 import { dev } from '$app/environment';
 
 export const GET: RequestHandler = async ({ url, cookies, locals }) => {
-	console.log('======refresh=====');
 	if (locals.user?.id) {
-		console.log('======refresh user exists => return: ');
 		throw redirect(302, '/');
 	}
 
-	const disco_refresh_token = url.searchParams.get('code');
-	console.log('======refresh disco refreshh token from search params====', disco_refresh_token);
+	const dscrd_refresh_token = url.searchParams.get('code');
 	const refresh_token_expires_in = new Date(Date.now() + 60 * 1000); // 1 minute
 	cookies.set('test', 'refreshed_true', {
 		secure: !dev,
@@ -22,7 +19,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		expires: refresh_token_expires_in
 	});
 
-	if (!disco_refresh_token) {
+	if (!dscrd_refresh_token) {
 		throw error(500, 'No refresh token found in url search params ');
 	}
 
@@ -33,10 +30,9 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		client_secret: DISCORD_CLIENT_SECRET,
 		grant_type: 'refresh_token',
 		redirect_uri: DISCORD_REDIRECT_URI,
-		refresh_token: disco_refresh_token,
+		refresh_token: dscrd_refresh_token,
 		scope: 'email identify guilds'
 	};
-	console.log('======refresh== perform fetch for new access token ===');
 
 	// performing a Fetch request to Discord's token endpoint
 	const request = await fetch('https://discord.com/api/oauth2/token', {
@@ -45,9 +41,6 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 	});
 	const refresh_response = await request.json();
-	console.log('======refresh=====', request.status, request.statusText);
-
-	console.log('========refresh response  refresh token', refresh_response);
 
 	if (refresh_response.error) {
 		throw error(500, 'No refresh token found in POST response');
