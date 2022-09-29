@@ -1,28 +1,33 @@
 <script lang='ts'>
-	import type { PageData } from './$types';
-  export let data: PageData
-  import { page } from '$app/stores'
-  $:user = $page.data.user
+			import type { PageData } from './$types';
+			export let data: PageData
+      import { user } from '$lib/stores';
 </script>
 
 <div class='section'>
-  <a class='link' data-sveltekit-prefetch href="/">Home</a>
-{#if !user}
+  <!-- <a class='link' data-sveltekit-prefetch href="/">Home</a> -->
+  <a class='link' href="/">Home</a>
+
+{#if !$user}
   <a rel="external" title="Discord OAuth2" href="api/auth">Authenticate via Discord</a>
 {:else}
-  <img style='background-color:{user.banner_color};' alt="{user.username}#{user.discriminator} avatar" src="https://cdn.discordapp.com/avatars/{user.id}/{user.avatar}.png">
-  <h1>{user.username}#{user.discriminator}</h1>
-  <ul>
+  <img style='background-color:{$user.banner_color};' alt="{$user.username}#{$user.discriminator} avatar" src="https://cdn.discordapp.com/avatars/{$user.id}/{$user.avatar}.png">
+  <h1>{$user.username}#{$user.discriminator}</h1>
+  
+    {#if data.guilds.message}
+    <p>{data.guilds.message}</p>
+    {:else}
+    <ul>
   {#each data.guilds as guild}
-  <div class='list'>
+	<div class='list'>
   
   <img class="icon" src="https://cdn.discordapp.com/icons/{guild.id}/{guild.icon}.png" alt=" " aria-hidden="true">
   <li>{guild.name}</li> 
 </div>
-  {/each}
-  </ul>
+  {/each}</ul>
+    {/if}
+  
 
-  <!-- <pre>{JSON.stringify(data.guilds , null, 2)}</pre> -->
 {/if}
 </div>
 <style>
