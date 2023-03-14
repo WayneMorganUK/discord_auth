@@ -33,8 +33,6 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
 
 	if (request.status !== 200) {
-		console.log('=========refresh request error==================', request)
-
 		throw error(request.status, `refresh request error = ${request.statusText} `);
 
 	}

@@ -32,6 +32,8 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 
 	const refresh_token_expires_in = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
 
+
+
 	cookies.set('dscrd_access_token', oauthData.access_token, {
 		secure: !dev,
 		httpOnly: true,
@@ -46,5 +48,8 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	});
 	console.log('======== callback +server end with cookies set=================')
 
-	throw redirect(302, '/');
+	throw redirect(303, '/');
 }
+
+
+

@@ -11,14 +11,14 @@
 	<p>
 		Visit <a
 			target="_blank"
-			rel="external nofollow"
+			rel="external noreferrer nofollow"
 			href="https://discord.com/developers/applications">Discord Developers Portal</a
 		> to create a Discord Application
 	</p>
 	<p>
 		Based on this blog post <a
 			target="_blank"
-			rel="external nofollow"
+			rel="external noreferrer nofollow"
 			href="https://msyyn.medium.com/how-to-add-discord-oauth-to-your-sveltekit-web-application-7c2e69d7656e"
 			>How to add Discord OAuth to your SvelteKit web application</a
 		>
