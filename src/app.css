@@ -1,0 +1,44 @@
+@import 'tailwindcss';
+
+@layer base {
+	h1 {
+		font-size: var(--text-4xl);
+	}
+	h2 {
+		font-size: var(--text-3xl);
+	}
+	h3 {
+		font-size: var(--text-2xl);
+	}
+	h4 {
+		font-size: var(--text-xl);
+	}
+	h5 {
+		font-size: var(--text-lg);
+	}
+	h6 {
+		font-size: var(--text-base);
+	}
+	p {
+		font-size: var(--text-base);
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p {
+		font-weight: var(--font-semibold);
+		color: var(--color-gray-100);
+	}
+	a {
+		color: var(--color-teal-500);
+	}
+	a:hover {
+		color: var(--color-teal-300);
+	}
+	body {
+		background-color: var(--color-gray-800);
+	}
+}

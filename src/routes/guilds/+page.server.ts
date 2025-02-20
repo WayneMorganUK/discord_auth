@@ -1,26 +1,31 @@
-import type { PageServerLoad } from './$types';
 import { DISCORD_API_URL } from '$env/static/private';
 import { error } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ locals }) => {
-    console.log('======== guilds +page.server start==================')
+export const load = async ({ locals }) => {
+    // Destructure the access and refresh tokens from locals
+    const { discord_access_token, discord_refresh_token } = locals;
 
-
-    const { dscrd_access_token, dscrd_refresh_token } = locals
-    if (dscrd_access_token && dscrd_refresh_token) {
+    // Check if both access and refresh tokens are available
+    if (discord_access_token && discord_refresh_token) {
+        // Make a request to the Discord API to get the user's guilds
         const request = await fetch(`${DISCORD_API_URL}/users/@me/guilds`, {
-            headers: { Authorization: `Bearer ${dscrd_access_token}` }
+            headers: { Authorization: `Bearer ${discord_access_token}` }
         });
+
+        // If the request fails, throw an error with the response status and status text
         if (request.status !== 200) {
-            throw error(request.status, `guilds request error - ${request.statusText} `)
+            throw error(request.status, `guilds request error - ${request.statusText}`);
         }
 
-        const guilds = await request.json();
-        console.log('======== guilds +page.server with guilds==================')
+        // Parse the response to get the guilds data
+        const guilds: Guilds[] = await request.json();
 
-        return { locals, guilds }
+        // Return the locals and guilds data
+        return { locals, guilds };
     }
+
+    // If tokens are not available, return only the locals
     return {
         locals
-    }
-}
+    };
+};

@@ -3,11 +3,10 @@ import { error, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ locals, cookies }) => {
-	console.log('======== signout +server start=================')
+	// Retrieve the access token from locals
+	const access_token = locals.discord_access_token;
 
-
-	const access_token = locals.dscrd_access_token
-
+	// Make a request to the Discord API to revoke the access token
 	const signOutResponse = await fetch('https://discord.com/api/oauth2/token/revoke', {
 		method: 'POST',
 		body: new URLSearchParams({
@@ -17,18 +16,22 @@ export const GET: RequestHandler = async ({ locals, cookies }) => {
 		}),
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 	});
+
+	// If the sign-out request fails, throw an error with the response status and status text
 	if (signOutResponse.status !== 200) {
-		throw error(signOutResponse.status, `signout request error = ${signOutResponse.statusText} `);
+		throw error(signOutResponse.status, `signout request error = ${signOutResponse.statusText}`);
 	}
 
-	cookies.delete('dscrd_refresh_token', { path: '/' });
-	cookies.delete('dscrd_access_token', { path: '/' });
+	// Delete the refresh and access tokens from cookies
+	cookies.delete('discord_refresh_token', { path: '/' });
+	cookies.delete('discord_access_token', { path: '/' });
 
-	locals.dscrd_access_token = '';
-	locals.dscrd_refresh_token = '';
+	// Clear the tokens and user information from locals
+	locals.discord_access_token = '';
+	locals.discord_refresh_token = '';
 	locals.user = null;
-	console.log('======== signout +server end cookies and locals cleared =================')
 
+	// Redirect the user to the home page
 	throw redirect(302, '/');
-}
+};
 

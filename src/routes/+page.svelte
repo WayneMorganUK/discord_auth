@@ -1,13 +1,12 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	export let data: PageData;
+	import type { PageProps } from './$types';
+	import ProfileCard from '$lib/ProfileCard.svelte';
+
+	let { data }: PageProps = $props();
 </script>
 
-<div class="section">
-	<!-- <a class='link' data-sveltekit-prefetch href="/guilds">Go to Guilds</a> -->
-	<a class="link" href="/guilds">Go to Guilds</a>
-
-	<h1>Welcome to SvelteKit Discord OAuth2</h1>
+<div class="items-center flex flex-col w-full mx-auto mt-5">
+	<h1 class="text-bold uppercase">Welcome to SvelteKit Discord OAuth2</h1>
 	<p>
 		Visit <a
 			target="_blank"
@@ -23,38 +22,11 @@
 			>How to add Discord OAuth to your SvelteKit web application</a
 		>
 	</p>
-	{#if !data.user}
-		<a rel="external" title="Discord OAuth2" href="api/auth">Authenticate via Discord</a>
-	{:else}
-		<img
-			style="background-color:{data.user.banner_color};"
-			alt="{data.user.username}#{data.user.discriminator} avatar"
-			src="https://cdn.discordapp.com/avatars/{data.user.id}/{data.user.avatar}.png"
-		/>
-		<h1>{data.user.username}#{data.user.discriminator}</h1>
-		<h2>email: {data.user.email}</h2>
-		<a rel="external" title="Sign out" href="api/signout">Sign Out</a>
-		<!-- rel='external' causes error in signout if missing -->
-
-		<!-- <pre>{JSON.stringify(data.user , null, 2)}</pre> -->
+	{#if data.user}
+		<ProfileCard info={data} />
+		<h5 class="mb-2">
+			<span class="font-bold text-gray-300">email: </span>
+			{data.user.email}
+		</h5>
 	{/if}
 </div>
-
-<style>
-	.link {
-		font-size: 32px;
-	}
-	.section {
-		align-items: center;
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	img {
-		height: 200px;
-		width: 200px;
-		padding: 5px;
-	}
-</style>
