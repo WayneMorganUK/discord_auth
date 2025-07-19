@@ -43,6 +43,34 @@ declare global {
 		permissions_new: string;
 		features: string[];
 	}
+	type Guild = {
+		id: string;
+		last_message_id: string;
+		flags: number;
+		guild_id: string;
+		name: string;
+
+		parent_id: string | null;
+		rate_limit_per_user: number;
+		topic: string | null;
+		position: number;
+		permission_overwrites: PermissionOverwrites[];
+		nsfw: boolean;
+		icon_emoji: IconEmoji;
+
+	}
+
+	type IconEmoji = {
+		id: string | null;
+		name: string;
+	}
+
+	type PermissionOverwrites = {
+		id: string;
+		type: number;
+		allow: string;
+		deny: string;
+	}
 }
 
 export { };

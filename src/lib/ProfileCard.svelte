@@ -4,10 +4,10 @@
 
 <div class="my-4 relative w-80 h-64 rounded-2xl">
 	<div
-		class="relative top-0 left-0 w-full h-1/3 rounded-top-2xl"
+		class="relative top-0 left-0 w-full h-1/3 rounded-t-2xl"
 		style="background-color:{info.user?.banner_color || 'transparent'};"
 	></div>
-	<div class="relative bottom-0 left-0 w-full h-2/3 bg-black"></div>
+	<div class="relative bottom-0 left-0 w-full h-2/3 bg-black rounded-b-2xl"></div>
 
 	<div class="absolute top-1/2 left-4 transform -translate-y-1/2">
 		<img

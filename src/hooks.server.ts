@@ -33,7 +33,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.discord_access_token = discord_response.access_token;
 		event.locals.discord_refresh_token = discord_response.refresh_token;
 
-
 		// Set the new access token in the cookies with a max age of 600 seconds (10 minutes)
 		event.cookies.set('discord_access_token', discord_response.access_token, {
 			secure: !dev, // Use secure cookies in production

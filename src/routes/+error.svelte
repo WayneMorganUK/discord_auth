@@ -3,8 +3,8 @@
 </script>
 
 <div class="text-center mb-16">
-	<h1>{page.status}: {page.error?.message}</h1>
-	<h2>Oops</h2>
+	<h1>Oops</h1>
+	<h2>{page.status}: {page.error?.message}</h2>
 
 	<a href="/">Return to the home screen</a>
 </div>
